@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input} from '@angular/core';
+import { Card } from '../card/card.component';
 
 @Component({
   selector: 'app-folder',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FolderComponent implements OnInit {
 
+  foldername: string = "";
+  routerlink: string = "";
+
   constructor() { }
 
+  @Input() folder: Folder = {cards: []};
+
   ngOnInit(): void {
+    this.foldername = Object.keys(this.folder)[0];
+    this.routerlink = "/cards/" + this.foldername;
+    console.log(this.folder.cards)
   }
 
+}
+
+export interface Folder {
+  cards: Card[];
 }
