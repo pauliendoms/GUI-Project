@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Folder } from '../folder/folder.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-folderview',
@@ -9,23 +10,16 @@ import { Folder } from '../folder/folder.component';
 })
 export class FolderviewComponent implements OnInit {
   folders: Folder[] = [];
+  newFolder: Folder = {id: null, name: ""};
 
-  constructor(private databaseService : DatabaseService) { }
+  constructor(public data: DatabaseService, private router : Router) { }
 
   ngOnInit(): void {
-    this.onGetFolders();
-    console.log(this.folders);
   }
 
-  onGetFolders() : void {
-    this.databaseService.getFolders().subscribe(
-      (response : Folder[]) => {
-        console.log('received:', response);
-        this.folders = response;
-      },
-      (error) => console.log('error', error),
-      () => console.log(this.folders)
-    );
+  onAddFolder() : void {
+    if (this.newFolder.name != "") {
+      this.data.addFolder(this.newFolder);
+    }
   }
-
 }

@@ -8,21 +8,19 @@ import { Card } from '../card/card.component';
 })
 export class FolderComponent implements OnInit {
 
-  foldername: string = "";
   routerlink: string = "";
 
   constructor() { }
 
-  @Input() folder: Folder = {cards: []};
+  @Input() folder: Folder = {id: 0, name: ""};
 
   ngOnInit(): void {
-    this.foldername = Object.keys(this.folder)[0];
-    this.routerlink = "/cards/" + this.foldername;
-    console.log(this.folder.cards)
+    this.routerlink = "/cards/" + this.folder.id;
   }
 
 }
 
 export interface Folder {
-  cards: Card[];
+  id: number | null,
+  name: string
 }

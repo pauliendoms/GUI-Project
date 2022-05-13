@@ -11,15 +11,61 @@ export class DatabaseService {
 
   constructor(private http: HttpClient) { }
 
-  getFolders() : Observable<Folder[]> {
+  folders: Folder[] = [];
+  cards: Card[] = [];
+
+  updateFolders() {
     const url = "http://localhost:3000/folders";
-    return this.http.get<Folder[]>(url);
+    this.http.get<Folder[]>(url).subscribe(
+      (response: Folder[]) => {
+        this.folders = response;
+      },
+      (error) => console.log('error')
+    )
   }
 
-  getCards(folder: string) : Observable<Card[]> {
-    console.log("hello");
-    console.log(folder);
-    const url = "http://localhost:3000/folders/" + folder;
-    return this.http.get<Card[]>(url);
+  addFolder(folder: Folder) {
+    const url = "http://localhost:3000/folders";
+    this.http.post<Folder>(url, folder).subscribe(
+      (response) => {
+        this.updateFolders();
+      },
+      (error) => console.log('error: ', error)
+    )
+  }
+
+  updateCards(folder: number) {
+    const url = "http://localhost:3000/folders/" + folder + "/cards";
+    this.http.get<Card[]>(url).subscribe(
+      (response: Card[]) => {
+        this.cards = response;
+        console.log('success');
+      },
+      (error) => console.log("error: ", error)
+    )
+  }
+
+  addCard(card: Card) {
+    const url = "http://localhost:3000/folders/" + card.folderId + "/cards";
+    this.http.post<Card>(url, card).subscribe(
+      (response) => {
+        console.log("success");
+        this.updateCards(card.folderId);
+      },
+      (error) => console.log('error: ', error)
+    )
+  }
+
+  saveCard(card: Card) {
+    const url = "http://loclahost:3000/cards/" + card.id;
+    this.http.put<Card>(url, card).subscribe(
+      (response : Card) => {
+        console.log("success");
+        this.updateCards(card.folderId);
+      },
+      (error) => {
+        console.log('error', error);
+      }
+    );
   }
 }

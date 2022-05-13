@@ -1,1 +1,8 @@
-<app-folder *ngFor="let folder of folders" [folder] = "folder"></app-folder>
+<div>
+    <div class="folder-top bg-primary-100 w-10 h-2 rounded-t-lg"></div>
+    <div class="folder-body bg-primary-100 w-24 py-5 px-4 rounded-b-lg rounded-tr-lg text-center">
+        <input type="text" name="new-folder" id="new-folder" [(ngModel)]="newFolder.name">
+        <button (click)="onAddFolder()">Add Folder</button>
+    </div>
+</div>
+<app-folder *ngFor="let folder of this.data.folders" [folder] = "folder"></app-folder>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Card } from '../card/card.component';
 import { DatabaseService } from '../database.service';
-import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cardsview',
@@ -11,26 +11,20 @@ import { Location } from '@angular/common';
 export class CardsviewComponent implements OnInit {
 
   cardsList: Card[] = [];
-  foldername: string = "";
+  folder: number = 0; 
 
-  constructor(private databaseService: DatabaseService, private loc: Location) { }
+  constructor(public data: DatabaseService, private route: ActivatedRoute) { }
 
-  newCard: Card = {id: 0, question: "", answer: ""};
+  newCard: Card = {id: null, question: "", answer: "", folderId: 0};
 
   ngOnInit(): void {
-    this.foldername = this.loc.path().split("/")[2];
-    console.log(this.foldername);
+    this.folder = this.route.snapshot.params['id'];
+    this.newCard.folderId = this.folder;
   }
 
-  onGetCards() : void {
-    this.databaseService.getCards(this.foldername).subscribe(
-      (response : Card[]) => {
-        console.log('received:', response);
-        this.cardsList = response;
-      },
-      (error) => console.log('error', error),
-      () => console.log(this.cardsList)
-    );
+  onAddCard() : void {
+    if (this.newCard.question != "" && this.newCard.answer != "") {
+      this.data.addCard(this.newCard)
+    }
   }
-
 }
