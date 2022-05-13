@@ -15,6 +15,7 @@ export class FolderviewComponent implements OnInit {
   constructor(public data: DatabaseService, private router : Router) { }
 
   ngOnInit(): void {
+    this.data.updateFolders();
   }
 
   onAddFolder() : void {

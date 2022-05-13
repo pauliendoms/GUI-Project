@@ -14,7 +14,6 @@ export class CardComponent implements OnInit {
   @Input() card: Card = {id: null, question: "", answer: "", folderId: 0};
 
   ngOnInit(): void {
-    this.data.updateFolders
   }
 
   onSaveCard() : void {
@@ -23,6 +22,10 @@ export class CardComponent implements OnInit {
     if (this.card.question != "" && this.card.answer != "") {
       this.data.saveCard(this.card);
     }
+  }
+
+  onDeleteCard() : void {
+    this.data.deleteCard(this.card);
   }
 
 }

@@ -19,6 +19,7 @@ export class DatabaseService {
     this.http.get<Folder[]>(url).subscribe(
       (response: Folder[]) => {
         this.folders = response;
+        console.log('succes');
       },
       (error) => console.log('error')
     )
@@ -57,7 +58,7 @@ export class DatabaseService {
   }
 
   saveCard(card: Card) {
-    const url = "http://loclahost:3000/cards/" + card.id;
+    const url = "http://localhost:3000/cards/" + card.id;
     this.http.put<Card>(url, card).subscribe(
       (response : Card) => {
         console.log("success");
@@ -67,5 +68,16 @@ export class DatabaseService {
         console.log('error', error);
       }
     );
+  }
+
+  deleteCard(card: Card) {
+    const url = "http://localhost:3000/cards/" + card.id;
+    this.http.delete(url).subscribe(
+      (response) => {
+        console.log("succes");
+        this.updateCards(card.folderId);
+      },
+      (error) => console.log('error', error)
+    )
   }
 }

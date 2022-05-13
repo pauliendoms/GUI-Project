@@ -20,11 +20,14 @@ export class CardsviewComponent implements OnInit {
   ngOnInit(): void {
     this.folder = this.route.snapshot.params['id'];
     this.newCard.folderId = this.folder;
+    this.data.updateCards(this.folder);
   }
 
   onAddCard() : void {
     if (this.newCard.question != "" && this.newCard.answer != "") {
       this.data.addCard(this.newCard)
+      this.newCard.question = "";
+      this.newCard.answer = "";
     }
   }
 }
