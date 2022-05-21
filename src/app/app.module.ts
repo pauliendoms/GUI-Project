@@ -12,6 +12,8 @@ import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common'
 import { FolderviewComponent } from './folderview/folderview.component';
 import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
+import { QuizsettingsComponent } from './quizsettings/quizsettings.component';
+import { QuizComponent } from './quiz/quiz.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -30,6 +32,8 @@ const routes: Routes = [
     CardComponent,
     FolderviewComponent,
     HomeComponent,
+    QuizsettingsComponent,
+    QuizComponent,
   ],
   imports: [
     BrowserModule,

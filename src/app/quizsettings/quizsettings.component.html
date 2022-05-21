@@ -1,0 +1,5 @@
+<datalist>
+    <option *ngFor="let folder of this.data.folders" [value]="folder.name">{{folder.name}}</option>
+</datalist>
+<input type="number" name="nmbr_cards" id="nmbr_cards" class="spinbox border-1 shadow-md" [(ngModel)]="this.quizsettings.amount">
+<button class="start" (click)="startQuiz()">Start</button>
