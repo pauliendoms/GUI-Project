@@ -11,23 +11,30 @@ export class QuizsettingsComponent implements OnInit {
   constructor(public data : DatabaseService) { }
 
   quizsettings : Quizsettings = {
-    themes: "",
+    theme: "",
     amount: 0,
     repetitive: false,
   }
+
+  selected : string = "";
 
   ngOnInit(): void {
     this.data.updateFolders();
   }
 
   startQuiz() {
+    console.log(this.quizsettings);
+
+    if (this.quizsettings.theme == "") return;
+    if (this.quizsettings.amount == 0) return;
+
     console.log("starting");
   }
 
 }
 
 export interface Quizsettings {
-  themes: string,
+  theme: string,
   amount: number,
   repetitive: boolean,
 }

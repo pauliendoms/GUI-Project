@@ -1,5 +1,13 @@
-<datalist>
-    <option *ngFor="let folder of this.data.folders" [value]="folder.name">{{folder.name}}</option>
-</datalist>
-<input type="number" name="nmbr_cards" id="nmbr_cards" class="spinbox border-1 shadow-md" [(ngModel)]="this.quizsettings.amount">
-<button class="start" (click)="startQuiz()">Start</button>
+<div class="quizsettings flex flex-col justify-between items-center">
+    <label class="p-2" for="folder-select">Select a folder:</label>
+    <select class="m-2" id="folder-select" name="folder-select" [(ngModel)]="this.quizsettings.theme">
+        <option *ngFor="let folder of this.data.folders" [value]="folder.name">{{folder.name}}</option>
+    </select>
+    <label for="nmbr_cards">Select the amount of questions: </label>
+    <input type="number" name="nmbr_cards" id="nmbr_cards" class="spinbox border-1 shadow-md m-2" [(ngModel)]="this.quizsettings.amount">
+    <span class="m-2">
+        <label class="m-2" for="repetitive">Repeat questions answered incorrectly:</label>
+        <input type="checkbox" name="repetitive" id="repetitive" [(ngModel)]="this.quizsettings.repetitive">
+    </span>
+    <button class="start btn" (click)="startQuiz()">Start</button>
+</div>
