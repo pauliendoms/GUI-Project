@@ -4,7 +4,7 @@
         <option *ngFor="let folder of this.data.folders" [value]="folder.name">{{folder.name}}</option>
     </select>
     <label for="nmbr_cards">Select the amount of questions: </label>
-    <input type="number" name="nmbr_cards" id="nmbr_cards" class="spinbox border-1 shadow-md m-2" [(ngModel)]="this.quizsettings.amount">
+    <input type="number" name="nmbr_cards" id="nmbr_cards" min="1" class="spinbox border-1 shadow-md m-2" [(ngModel)]="this.quizsettings.amount">
     <span class="m-2">
         <label class="m-2" for="repetitive">Repeat questions answered incorrectly:</label>
         <input type="checkbox" name="repetitive" id="repetitive" [(ngModel)]="this.quizsettings.repetitive">

@@ -14,6 +14,7 @@ import { HomeComponent } from './home/home.component';
 import { HttpClientModule } from '@angular/common/http';
 import { QuizsettingsComponent } from './quizsettings/quizsettings.component';
 import { QuizComponent } from './quiz/quiz.component';
+import { QuizCardComponent } from './quiz-card/quiz-card.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -34,6 +35,7 @@ const routes: Routes = [
     HomeComponent,
     QuizsettingsComponent,
     QuizComponent,
+    QuizCardComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Card } from './card/card.component';
 import { Folder } from './folder/folder.component';
 
@@ -13,6 +12,7 @@ export class DatabaseService {
 
   folders: Folder[] = [];
   cards: Card[] = [];
+  questions: Card[] = [];
 
   updateFolders() {
     const url = "http://localhost:3000/folders";
@@ -35,15 +35,17 @@ export class DatabaseService {
     )
   }
 
-  updateCards(folder: number) {
-    const url = "http://localhost:3000/folders/" + folder + "/cards";
-    this.http.get<Card[]>(url).subscribe(
-      (response: Card[]) => {
-        this.cards = response;
-        console.log('success');
-      },
-      (error) => console.log("error: ", error)
-    )
+  updateCards(folder: number) : Promise<void> {
+    return new Promise((resolve, reject) => {
+      const url = "http://localhost:3000/folders/" + folder + "/cards";
+      this.http.get<Card[]>(url).subscribe({
+        next: (response: Card[]) => {
+          this.cards = response;
+          resolve();
+        },
+        error: (error: any) => reject(error)
+      })
+    });
   }
 
   addCard(card: Card) {
@@ -79,5 +81,42 @@ export class DatabaseService {
       },
       (error) => console.log('error', error)
     )
+  }
+
+  loadQuestions(folder: string, amount: number) : Promise<void> {
+    let id: number = 0;
+    const url = "http://localhost:3000/folders?name=" + folder;
+    return new Promise((resolve, reject) => {
+      this.http.get<Folder[]>(url).subscribe({
+        next: async (response: Folder[]) => {
+          console.log(response)
+          id = response[0].id;
+          await this.updateCards(id);
+
+          let questions: Card[] = [];
+
+          for (let i = 0; i < amount; i++) {
+          
+            let random =  Math.floor(Math.random() * this.cards.length);
+            
+            let question = this.cards[random];
+            let check: boolean = false;
+
+            while (!check) {
+              if (questions.includes(question)) {
+                question = this.cards[Math.floor(Math.random() * this.cards.length)];
+              } else {
+                questions.push(question);
+                check = true;
+              }
+            }
+          }
+
+          this.questions = questions;
+          resolve();
+        },
+        error: (error) => reject()
+      })
+    })
   }
 }

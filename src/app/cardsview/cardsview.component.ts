@@ -15,7 +15,7 @@ export class CardsviewComponent implements OnInit {
 
   constructor(public data: DatabaseService, private route: ActivatedRoute) { }
 
-  newCard: Card = {id: null, question: "", answer: "", folderId: 0};
+  newCard: Card = {id: 0, question: "", answer: "", folderId: 0};
 
   ngOnInit(): void {
     this.folder = this.route.snapshot.params['id'];

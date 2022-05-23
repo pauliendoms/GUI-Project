@@ -21,6 +21,6 @@ export class FolderComponent implements OnInit {
 }
 
 export interface Folder {
-  id: number | null,
+  id: number,
   name: string
 }

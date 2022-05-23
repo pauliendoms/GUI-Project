@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
+import { Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-quizsettings',
@@ -12,11 +14,13 @@ export class QuizsettingsComponent implements OnInit {
 
   quizsettings : Quizsettings = {
     theme: "",
-    amount: 0,
+    amount: 1,
     repetitive: false,
   }
 
   selected : string = "";
+
+  @Output() quizStart = new EventEmitter<Quizsettings>();
 
   ngOnInit(): void {
     this.data.updateFolders();
@@ -26,9 +30,10 @@ export class QuizsettingsComponent implements OnInit {
     console.log(this.quizsettings);
 
     if (this.quizsettings.theme == "") return;
-    if (this.quizsettings.amount == 0) return;
+    if (this.quizsettings.amount == null) return;
 
     console.log("starting");
+    this.quizStart.emit(this.quizsettings);
   }
 
 }

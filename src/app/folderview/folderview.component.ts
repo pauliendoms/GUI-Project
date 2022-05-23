@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class FolderviewComponent implements OnInit {
   folders: Folder[] = [];
-  newFolder: Folder = {id: null, name: ""};
+  newFolder: Folder = {id: 0, name: ""};
 
   constructor(public data: DatabaseService, private router : Router) { }
 

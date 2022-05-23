@@ -1,0 +1,10 @@
+
+<ng-container *ngFor="let card of this.cards">
+    <app-quiz-card (click)="showAnswer()" *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'question'">{{card.question}}</app-quiz-card>
+</ng-container>
+<button *ngIf="this.status == 'answer'" (click)="badAnswer()">BAD</button>
+<ng-container *ngFor="let card of this.cards">
+    <app-quiz-card *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'answer'">{{card.answer}}</app-quiz-card>
+</ng-container>
+<button *ngIf="this.status == 'answer'" (click)="goodAnswer()">GOOD</button>
+

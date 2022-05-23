@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Quizsettings } from '../quizsettings/quizsettings.component';
 
 @Component({
   selector: 'app-quizview',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuizviewComponent implements OnInit {
 
-  constructor() { }
+  quiz: boolean = false;
+  quizSettings : Quizsettings = {
+    theme: "",
+    amount: 0,
+    repetitive: false,
+  }
+
+  constructor() {}
 
   ngOnInit(): void {
+  }
+
+  startQuiz(settings: Quizsettings) {
+    this.quizSettings = settings;
+    this.quiz = true;
   }
 
 }

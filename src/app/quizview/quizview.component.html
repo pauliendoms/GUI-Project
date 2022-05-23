@@ -1,2 +1,2 @@
-<app-quizsettings></app-quizsettings>
-<app-quiz></app-quiz>
+<app-quizsettings (quizStart)="startQuiz($event)" *ngIf="!this.quiz"></app-quizsettings>
+<app-quiz *ngIf="this.quiz" [quizSettings]="quizSettings"></app-quiz>
