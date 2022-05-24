@@ -25,6 +25,18 @@ export class DatabaseService {
     )
   }
 
+  getFolder(folderId: number) : Promise<Folder> {
+    return new Promise((resolve, reject) => {
+      const url = "http://localhost:3000/folders/" + folderId;
+      this.http.get<Folder>(url).subscribe({
+        next: (response: Folder) => {
+          resolve(response);
+        },
+        error: (error: any) => reject(error)
+      })
+    });
+  }
+
   addFolder(folder: Folder) {
     const url = "http://localhost:3000/folders";
     this.http.post<Folder>(url, folder).subscribe(
