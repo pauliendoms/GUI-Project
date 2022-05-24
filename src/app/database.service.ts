@@ -35,6 +35,28 @@ export class DatabaseService {
     )
   }
 
+  saveFolder(folder: Folder) {
+    const url = "http://localhost:3000/folders/" + folder.id;
+    this.http.put<Folder>(url, folder).subscribe({
+      next: (response: Folder) => {
+        this.updateFolders();
+      },
+      error: (error: any) => {
+        console.log("error", error);
+      }
+    })
+  }
+
+  deleteFolder(folder: Folder) {
+    const url = "http://localhost:3000/folders/" + folder.id;
+    this.http.delete(url).subscribe({
+      next: (response) => {
+        this.updateFolders;
+      },
+      error: (error) => console.log("error", error)
+    })
+  }
+
   updateCards(folder: number) : Promise<void> {
     return new Promise((resolve, reject) => {
       const url = "http://localhost:3000/folders/" + folder + "/cards";
