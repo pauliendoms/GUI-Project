@@ -93,6 +93,10 @@ export class DatabaseService {
           id = response[0].id;
           await this.updateCards(id);
 
+          if (amount > this.cards.length) {
+            amount = this.cards.length;
+          }
+
           let questions: Card[] = [];
 
           for (let i = 0; i < amount; i++) {
