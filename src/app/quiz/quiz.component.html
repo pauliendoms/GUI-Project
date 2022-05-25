@@ -1,10 +1,12 @@
-
-<ng-container *ngFor="let card of this.cards">
-    <app-quiz-card (click)="showAnswer()" *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'question'">{{card.question}}</app-quiz-card>
-</ng-container>
-<button *ngIf="this.status == 'answer'" (click)="badAnswer()">BAD</button>
-<ng-container *ngFor="let card of this.cards">
-    <app-quiz-card *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'answer'">{{card.answer}}</app-quiz-card>
-</ng-container>
-<button *ngIf="this.status == 'answer'" (click)="goodAnswer()">GOOD</button>
-
+<div class=" m-auto grid grid-cols-3 w-full h-full">
+    <div *ngIf="this.status == 'question'"></div>
+    <ng-container *ngFor="let card of this.cards">
+        <app-quiz-card (click)="showAnswer()" *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'question'">{{card.question}}</app-quiz-card>
+    </ng-container>
+    <div *ngIf="this.status == 'question'"></div>
+    <i class="material-icons cursor-pointer m-auto" style="color: red;font-size: 90px;" *ngIf="this.status == 'answer'" (click)="badAnswer()">cancel</i>
+    <ng-container *ngFor="let card of this.cards">
+        <app-quiz-card *ngIf="this.current_id == this.cards.indexOf(card) && this.status == 'answer'">{{card.answer}}</app-quiz-card>
+    </ng-container>
+    <i class="material-icons cursor-pointer m-auto" style="color: green;font-size: 90px;" *ngIf="this.status == 'answer'" (click)="goodAnswer()">check_circle</i>
+</div>

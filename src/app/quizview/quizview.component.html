@@ -1,2 +1,4 @@
-<app-quizsettings (quizStart)="startQuiz($event)" *ngIf="!this.quiz"></app-quizsettings>
-<app-quiz *ngIf="this.quiz" [quizSettings]="quizSettings" (quizStop)="this.quiz=false"></app-quiz>
+<div class="text-center h-half flex justify-center items-center">
+    <app-quizsettings (quizStart)="startQuiz($event)" *ngIf="!this.quiz"></app-quizsettings>
+    <app-quiz *ngIf="this.quiz" [quizSettings]="quizSettings" (quizStop)="this.quiz=false" class="w-full"></app-quiz>
+</div>

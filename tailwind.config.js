@@ -17,6 +17,11 @@ module.exports = {
       red: {
         100: "#ED6A5A",
       }
+    },
+    extend: {
+      spacing: {
+        "half": "50vh"
+      }
     }
   },
   plugins: [],
