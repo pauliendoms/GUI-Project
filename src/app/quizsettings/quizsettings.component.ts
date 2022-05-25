@@ -20,20 +20,49 @@ export class QuizsettingsComponent implements OnInit {
 
   selected : string = "";
 
+  error: string = "";
+
   @Output() quizStart = new EventEmitter<Quizsettings>();
 
   ngOnInit(): void {
     this.data.updateFolders();
   }
 
-  startQuiz() {
+  async startQuiz() {
     console.log(this.quizsettings);
 
-    if (this.quizsettings.theme == "") return;
-    if (this.quizsettings.amount == null) return;
+    if (this.quizsettings.theme == "") {
+      this.error = "Combination not possible";
+      return;
+    } else if (this.quizsettings.amount == null) {
+      this.error = "Combination not possible";
+      return;
+    } else if (!(await this.checkFolderLength(this.quizsettings.theme))) {
+      this.error = "Combination not possible";
+      return;
+    }
+
+
 
     console.log("starting");
     this.quizStart.emit(this.quizsettings);
+  }
+
+  async checkFolderLength(foldername: string) {
+    let folderId = 0;
+
+    for (let folder of this.data.folders) {
+      if (folder.name == foldername) {
+        folderId = folder.id;
+      }
+    }
+
+    await this.data.updateCards(folderId);
+    if (this.data.cards.length == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
 }

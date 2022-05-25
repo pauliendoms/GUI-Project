@@ -1,8 +1,9 @@
-<div>
-    <div class="folder-top bg-primary-100 w-10 h-2 rounded-t-lg"></div>
-    <div class="folder-body bg-primary-100 w-24 py-5 px-4 rounded-b-lg rounded-tr-lg text-center">
-        <input type="text" name="new-folder" id="new-folder" [(ngModel)]="newFolder.name">
-        <button (click)="onAddFolder()">Add Folder</button>
+<div class="folderview w-full flex flex-col items-center">
+    <div class="my-6">
+        <input type="text" name="new-folder" id="new-folder" [(ngModel)]="newFolder.name" class="drop-shadow-2xl shadow-lg mx-3" placeholder="Folder name">
+        <button (click)="onAddFolder()" class="btn">Add Folder</button>
+    </div>
+    <div class="w-full grid grid-cols-4 justify-items-center gap-y-10">
+        <app-folder *ngFor="let folder of this.data.folders" [folder] = "folder"></app-folder>
     </div>
 </div>
-<app-folder *ngFor="let folder of this.data.folders" [folder] = "folder"></app-folder>

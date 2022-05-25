@@ -10,4 +10,5 @@
         <input type="checkbox" name="repetitive" id="repetitive" [(ngModel)]="this.quizsettings.repetitive">
     </span>
     <button class="start btn" (click)="startQuiz()">Start</button>
+    <p [innerText]="this.error" name="error paragraph" class="text-red-100"></p>
 </div>
