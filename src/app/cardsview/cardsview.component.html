@@ -7,13 +7,13 @@
             <button class="btn mx-3" (click)="onDeleteFolder()">Delete folder</button>
         </div>
         <div class="card flex flex-col w-1/3 justify-evenly p-5 shadow-2xl rounded-lg mb-6">
-            <div class="question">
+            <div class="question flex flex-row justify-between">
                 <label for="question" class="label font-bold pr-2">Q:</label>
-                <input type="text" name="question" id="question" class="question mb-5 flex-1 drop-shadow-md" [(ngModel)]="newCard.question">
+                <input type="text" name="question" id="question" class="question mb-5 drop-shadow-md w-full" [(ngModel)]="newCard.question">
             </div>
-            <div class="answer">
+            <div class="answer flex flex-row justify-between">
                 <label for="answer" class="label font-bold pr-2" >A:</label>
-                <input type="text" name="answer" id="answer" class="answer mb-5 drop-shadow-md" [(ngModel)]="newCard.answer">
+                <input type="text" name="answer" id="answer" class="answer mb-5 drop-shadow-md w-full" [(ngModel)]="newCard.answer">
             </div>
             <button class="btn" (click)="onAddCard()">Add Card</button>
         </div>

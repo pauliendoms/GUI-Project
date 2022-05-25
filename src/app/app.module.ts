@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { QuizsettingsComponent } from './quizsettings/quizsettings.component';
 import { QuizComponent } from './quiz/quiz.component';
 import { QuizCardComponent } from './quiz-card/quiz-card.component';
+import { LimitLengthPipe } from './limit-length.pipe';
 
 const routes: Routes = [
   {path: '', redirectTo: 'cards', pathMatch: "full"},
@@ -35,6 +36,7 @@ const routes: Routes = [
     QuizsettingsComponent,
     QuizComponent,
     QuizCardComponent,
+    LimitLengthPipe,
   ],
   imports: [
     BrowserModule,

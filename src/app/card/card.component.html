@@ -1,11 +1,11 @@
 <div class="card flex flex-col w-3/4 m-auto justify-evenly p-5 shadow-2xl rounded-lg">
-    <div class="question">
+    <div class="question flex flex-row justify-between">
         <label for="question" class="label font-bold pr-2">Q:</label>
-        <input type="text" name="question" id="question" class="question mb-5 flex-1 drop-shadow-md" [(ngModel)]="card.question">
+        <input type="text" name="question" id="question" class="question mb-5 flex-1 drop-shadow-md w-full" [(ngModel)]="card.question">
     </div>
-    <div class="answer">
+    <div class="answer flex flex-row justify-between">
         <label for="answer" class="label font-bold pr-2" >A:</label>
-        <input type="text" name="answer" id="answer" class="answer mb-5 drop-shadow-md" [(ngModel)]="card.answer">
+        <input type="text" name="answer" id="answer" class="answer mb-5 drop-shadow-md w-full" [(ngModel)]="card.answer">
     </div>
     <button class="btn" (click)="onSaveCard()">Save</button>
     <button class="btn my-2" (click)="onDeleteCard()">Delete</button>
