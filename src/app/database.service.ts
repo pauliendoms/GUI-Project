@@ -1,11 +1,118 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, CollectionReference, deleteDoc, query, setDoc, where } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 import { Card } from './card/card.component';
 import { Folder } from './folder/folder.component';
+import { doc } from 'firebase/firestore';
+import { isDelegatedFactoryMetadata } from '@angular/compiler/src/render3/r3_factory';
 
 @Injectable({
   providedIn: 'root'
 })
+
+export class DatabaseService {
+  constructor(private db: Firestore) {}
+
+  getFolders(): Observable<Folder[]> {
+    return collectionData<Folder>(
+      collection(this.db, 'folders') as CollectionReference<Folder>
+    );
+  }
+
+  getFolder(id: string): Observable<Folder[]> {
+    return collectionData<Folder>(
+      query<Folder>(
+        collection(this.db, 'folders') as CollectionReference<Folder>,
+        where("id", "==", id)
+      )
+    );
+  }
+
+  addFolder(folder: Folder): Promise<void> {
+    const newId = doc(collection(this.db, 'id')).id;
+    const ref = doc(this.db, 'folders/' + newId);
+    return setDoc(ref, folder);
+  }
+
+  saveFolder(folder: Folder): Promise<void> {
+    const ref = doc(this.db, 'folders/' + folder.id);
+    return setDoc(ref, folder);
+  }
+
+  deleteFolder(folder: Folder): Promise<void> {
+    const ref = doc(this.db, 'folders/' + folder.id);
+    return deleteDoc(ref);
+  }
+
+  // update, add, save, delete
+
+  getCards(folderId: string): Observable<Card[]> {
+    return collectionData<Card>(
+      query<Card>(
+        collection(this.db, 'cards') as CollectionReference<Card>,
+        where("folderId", "==", folderId)
+      )
+    );
+  }
+
+  addCard(card: Card): Promise<void> {
+    const newId = doc(collection(this.db, 'id')).id;
+    const ref = doc(this.db, 'cards/' + newId);
+    return setDoc(ref, card);
+  }
+
+  saveCard(card: Card): Promise<void> {
+    const ref = doc(this.db, 'cards/' + card.id);
+    return setDoc(ref, card);
+  }
+
+  deleteCard(card: Card): Promise<void> {
+    const ref = doc(this.db, 'cards/' + card.id);
+    return deleteDoc(ref);
+  }
+
+  loadQuestions(folderId: string, amount: number) : Promise<Card[]> {
+    return new Promise((resolve, reject) => {
+      collectionData<Card>(
+        query<Card>(
+          collection(this.db, 'cards') as CollectionReference<Card>,
+          where("folderId", "==", folderId)
+        )).subscribe({
+          next: async (cards: Card[]) => {
+
+          if (amount > cards.length) {
+            amount = cards.length;
+          }
+
+          let questions: Card[] = [];
+
+          for (let i = 0; i < amount; i++) {
+          
+            let random =  Math.floor(Math.random() * cards.length);
+            
+            let question = cards[random];
+            let check: boolean = false;
+
+            while (!check) {
+              if (questions.includes(question)) {
+                question = cards[Math.floor(Math.random() * cards.length)];
+              } else {
+                questions.push(question);
+                check = true;
+              }
+            }
+          }
+          resolve(questions);
+        },
+        error: (error) => reject()
+      })
+    })
+  }
+}
+
+/*
 export class DatabaseService {
 
   constructor(private http: HttpClient) { }
@@ -158,3 +265,5 @@ export class DatabaseService {
     })
   }
 }
+
+*/

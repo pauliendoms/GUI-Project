@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DatabaseService } from '../database.service';
 import { Folder } from '../folder/folder.component';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-folderview',
@@ -10,12 +11,13 @@ import { Router } from '@angular/router';
 })
 export class FolderviewComponent implements OnInit {
   folders: Folder[] = [];
-  newFolder: Folder = {id: 0, name: ""};
+  newFolder: Folder = {id: "", name: ""};
+  subscription: Subscription = new Subscription;
 
   constructor(public data: DatabaseService, private router : Router) { }
 
   ngOnInit(): void {
-    this.data.updateFolders();
+    this.onGetFolders();
   }
 
   onAddFolder() : void {
@@ -23,5 +25,17 @@ export class FolderviewComponent implements OnInit {
       this.data.addFolder(this.newFolder);
       this.newFolder.name = "";
     }
+  }
+
+  onGetFolders(): void {
+    this.subscription = this.data.getFolders().subscribe(
+      folders => {
+        this.folders = folders;
+      }
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 }

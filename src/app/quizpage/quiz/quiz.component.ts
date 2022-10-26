@@ -1,7 +1,7 @@
 import { Component, Input, Output, OnInit, EventEmitter } from '@angular/core';
 import { Quizsettings } from '../quizsettings/quizsettings.component';
-import { Card } from '../card/card.component';
-import { DatabaseService } from '../database.service';
+import { Card } from '../../card/card.component';
+import { DatabaseService } from '../../database.service';
 
 @Component({
   selector: 'app-quiz',
@@ -24,9 +24,11 @@ export class QuizComponent implements OnInit {
 
   constructor(private data: DatabaseService) { }
 
-  async ngOnInit() {
-    await this.data.loadQuestions(this.quizSettings.theme, this.quizSettings.amount);
-    this.cards = this.data.questions;
+  ngOnInit() {
+    this.data.loadQuestions(this.quizSettings.theme, this.quizSettings.amount)
+    .then((res: Card[]) => {
+      this.cards = res;
+    });
   }
 
   showAnswer(): void {

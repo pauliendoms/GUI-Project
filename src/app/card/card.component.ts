@@ -11,7 +11,7 @@ export class CardComponent implements OnInit {
 
   constructor(public data: DatabaseService) { }
 
-  @Input() card: Card = {id: 0, question: "", answer: "", folderId: 0};
+  @Input() card: Card = {id: "", question: "", answer: "", folderId: ""};
 
   ngOnInit(): void {
   }
@@ -31,8 +31,9 @@ export class CardComponent implements OnInit {
 }
 
 export interface Card {
-  id: number,
+  id: string,
   question: string,
   answer: string,
-  folderId: number
+  folderId: string 
 }
+

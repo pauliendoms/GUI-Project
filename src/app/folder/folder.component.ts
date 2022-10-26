@@ -12,7 +12,7 @@ export class FolderComponent implements OnInit {
 
   constructor() { }
 
-  @Input() folder: Folder = {id: 0, name: ""};
+  @Input() folder: Folder = {id: "", name: ""};
 
   ngOnInit(): void {
     this.routerlink = "/cards/" + this.folder.id;
@@ -21,6 +21,6 @@ export class FolderComponent implements OnInit {
 }
 
 export interface Folder {
-  id: number,
+  id: string,
   name: string
 }

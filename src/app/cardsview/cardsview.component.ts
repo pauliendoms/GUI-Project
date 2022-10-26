@@ -4,6 +4,7 @@ import { DatabaseService } from '../database.service';
 import { ActivatedRoute } from '@angular/router';
 import { Folder } from '../folder/folder.component';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cardsview',
@@ -12,21 +13,23 @@ import { Router } from '@angular/router';
 })
 export class CardsviewComponent implements OnInit {
 
-  cardsList: Card[] = [];
-  folder: Folder = {id: 0, name: ""};
+  cards: Card[] = [];
+  folder: Folder = {id: "", name: ""};
+  folderSubscription: Subscription = new Subscription;
+  cardSubscription: Subscription = new Subscription;
 
   constructor(public data: DatabaseService, private route: ActivatedRoute, private router: Router) { }
 
-  newCard: Card = {id: 0, question: "", answer: "", folderId: 0};
+  newCard: Card = {id: "", question: "", answer: "", folderId: ""};
 
   async ngOnInit() {
     this.folder.id = this.route.snapshot.params['id'];
-    this.folder = await this.data.getFolder(this.folder.id)
+    this.onGetFolder();
+    this.onGetCards();
     this.newCard.folderId = this.folder.id;
-    this.data.updateCards(this.folder.id);
   }
 
-  onAddCard() : void {
+  onAddCard(): void {
     if (this.newCard.question != "" && this.newCard.answer != "") {
       this.data.addCard(this.newCard)
       this.newCard.question = "";
@@ -34,12 +37,33 @@ export class CardsviewComponent implements OnInit {
     }
   }
 
-  onSaveFolder() {
+  onSaveFolder():void {
     this.data.saveFolder(this.folder);
   }
 
-  onDeleteFolder() {
+  onDeleteFolder():void {
     this.data.deleteFolder(this.folder);
     this.router.navigate(["/cards"]);
+  }
+
+  onGetFolder(): void {
+    this.folderSubscription = this.data.getFolder(this.folder.id).subscribe(
+      folder => {
+        this.folder = folder[0];
+      }
+    );
+  }
+
+  onGetCards(): void {
+    this.cardSubscription = this.data.getCards(this.folder.id).subscribe(
+      cards => {
+        this.cards = cards;
+      }
+    )
+  }
+
+  ngOnDestroy(): void {
+    this.cardSubscription.unsubscribe();
+    this.folderSubscription.unsubscribe();
   }
 }

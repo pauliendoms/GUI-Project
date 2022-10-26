@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { DatabaseService } from '../database.service';
+import { DatabaseService } from '../../database.service';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { Folder } from 'src/app/folder/folder.component';
+import { Subscription } from 'rxjs';
+import { Card } from 'src/app/card/card.component';
 
 @Component({
   selector: 'app-quizsettings',
@@ -22,10 +25,16 @@ export class QuizsettingsComponent implements OnInit {
 
   error: string = "";
 
+  folders: Folder[] = [];
+  folderSubscription: Subscription = new Subscription;
+
+  cards: Card[] = [];
+  cardSupscription: Subscription = new Subscription;
+
   @Output() quizStart = new EventEmitter<Quizsettings>();
 
   ngOnInit(): void {
-    this.data.updateFolders();
+    this.onGetFolders();
   }
 
   async startQuiz() {
@@ -48,21 +57,42 @@ export class QuizsettingsComponent implements OnInit {
     this.quizStart.emit(this.quizsettings);
   }
 
-  async checkFolderLength(foldername: string) {
-    let folderId = 0;
+  checkFolderLength(foldername: string) {
+    let folderId: string = "";
 
-    for (let folder of this.data.folders) {
+    for (let folder of this.folders) {
       if (folder.name == foldername) {
         folderId = folder.id;
       }
     }
 
-    await this.data.updateCards(folderId);
-    if (this.data.cards.length == 0) {
+    this.onGetCards(folderId);
+    if (this.cards.length == 0) {
       return false;
     } else {
       return true;
     }
+  }
+
+  onGetFolders(): void {
+    this.folderSubscription = this.data.getFolders().subscribe({
+      next: (response: Folder[]) => {
+        this.folders = response;
+      }
+    }); 
+  }
+
+  onGetCards(folderId: string): void {
+    this.cardSupscription = this.data.getCards(folderId).subscribe({
+      next: (response: Card[]) => {
+        this.cards = response;
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.folderSubscription.unsubscribe();
+    this.cardSupscription.unsubscribe();
   }
 
 }
