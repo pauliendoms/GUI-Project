@@ -14,6 +14,7 @@ export class QuizComponent implements OnInit {
     theme: "",
     amount: 0,
     repetitive: false,
+    folderId: ""
   }
 
   cards: Card[] = [];
@@ -25,7 +26,7 @@ export class QuizComponent implements OnInit {
   constructor(private data: DatabaseService) { }
 
   ngOnInit() {
-    this.data.loadQuestions(this.quizSettings.theme, this.quizSettings.amount)
+    this.data.loadQuestions(this.quizSettings.folderId, this.quizSettings.amount)
     .then((res: Card[]) => {
       this.cards = res;
     });

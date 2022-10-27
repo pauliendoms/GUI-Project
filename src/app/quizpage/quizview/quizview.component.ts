@@ -13,6 +13,7 @@ export class QuizviewComponent implements OnInit {
     theme: "",
     amount: 0,
     repetitive: false,
+    folderId: ""
   }
 
   constructor() {}

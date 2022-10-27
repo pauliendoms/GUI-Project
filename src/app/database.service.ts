@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { collectionData, Firestore } from '@angular/fire/firestore';
-import { addDoc, collection, CollectionReference, deleteDoc, query, setDoc, where } from 'firebase/firestore';
+import { collectionData, Firestore, docData } from '@angular/fire/firestore';
+import { addDoc, collection, CollectionReference, deleteDoc, DocumentReference, query, setDoc, where, updateDoc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { Card } from './card/card.component';
 import { Folder } from './folder/folder.component';
@@ -17,16 +17,15 @@ export class DatabaseService {
 
   getFolders(): Observable<Folder[]> {
     return collectionData<Folder>(
-      collection(this.db, 'folders') as CollectionReference<Folder>
+      collection(this.db, 'folders') as CollectionReference<Folder>,
+      {idField: 'id'}
     );
   }
 
-  getFolder(id: string): Observable<Folder[]> {
-    return collectionData<Folder>(
-      query<Folder>(
-        collection(this.db, 'folders') as CollectionReference<Folder>,
-        where("id", "==", id)
-      )
+  getFolder(id: string): Observable<Folder> {
+    return docData<Folder>(
+      doc(this.db, 'folders/' + id) as DocumentReference<Folder>,
+      {idField: 'id'}
     );
   }
 
@@ -37,8 +36,9 @@ export class DatabaseService {
   }
 
   saveFolder(folder: Folder): Promise<void> {
-    const ref = doc(this.db, 'folders/' + folder.id);
-    return setDoc(ref, folder);
+    console.log("folder in saveFolder: ", folder);
+    const ref = doc(this.db, 'folders/' + folder.id) as DocumentReference<Folder>;
+    return updateDoc(ref, folder);
   }
 
   deleteFolder(folder: Folder): Promise<void> {
@@ -46,14 +46,12 @@ export class DatabaseService {
     return deleteDoc(ref);
   }
 
-  // update, add, save, delete
-
   getCards(folderId: string): Observable<Card[]> {
     return collectionData<Card>(
       query<Card>(
         collection(this.db, 'cards') as CollectionReference<Card>,
-        where("folderId", "==", folderId)
-      )
+        where("folderId", "==", folderId),
+      ), {idField: 'id'}
     );
   }
 
@@ -64,11 +62,12 @@ export class DatabaseService {
   }
 
   saveCard(card: Card): Promise<void> {
-    const ref = doc(this.db, 'cards/' + card.id);
-    return setDoc(ref, card);
+    const ref = doc(this.db, 'cards/' + card.id) as DocumentReference<Card>;
+    return updateDoc(ref, card);
   }
 
   deleteCard(card: Card): Promise<void> {
+    console.log("card in deleteCard: ", card);
     const ref = doc(this.db, 'cards/' + card.id);
     return deleteDoc(ref);
   }
@@ -79,7 +78,7 @@ export class DatabaseService {
         query<Card>(
           collection(this.db, 'cards') as CollectionReference<Card>,
           where("folderId", "==", folderId)
-        )).subscribe({
+        ), {idField: 'id'}).subscribe({
           next: async (cards: Card[]) => {
 
           if (amount > cards.length) {

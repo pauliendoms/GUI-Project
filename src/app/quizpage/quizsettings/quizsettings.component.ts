@@ -19,6 +19,7 @@ export class QuizsettingsComponent implements OnInit {
     theme: "",
     amount: 1,
     repetitive: false,
+    folderId: "",
   }
 
   selected : string = "";
@@ -57,21 +58,38 @@ export class QuizsettingsComponent implements OnInit {
     this.quizStart.emit(this.quizsettings);
   }
 
-  checkFolderLength(foldername: string) {
-    let folderId: string = "";
+  checkFolderLength(foldername: string): Promise<boolean> {
 
     for (let folder of this.folders) {
       if (folder.name == foldername) {
-        folderId = folder.id;
+        this.quizsettings.folderId = folder.id;
       }
     }
 
-    this.onGetCards(folderId);
+    // this.onGetCards(folderId);
+
+    return new Promise<boolean>((resolve, reject) => {
+      this.cardSupscription = this.data.getCards(this.quizsettings.folderId).subscribe({
+        next: (response: Card[]) => {
+          this.cards = response;
+          if (this.cards.length == 0) {
+            resolve(false);
+          } else {
+            resolve(true);
+          }
+          reject("There was a problem while checking if this combination is possible")
+        }
+      })
+    })
+
+    /*
+    console.log("cards after onGetCards in checkFolderLength", this.cards);
     if (this.cards.length == 0) {
       return false;
     } else {
       return true;
     }
+    */
   }
 
   onGetFolders(): void {
@@ -85,6 +103,7 @@ export class QuizsettingsComponent implements OnInit {
   onGetCards(folderId: string): void {
     this.cardSupscription = this.data.getCards(folderId).subscribe({
       next: (response: Card[]) => {
+        console.log("response in onGetCards: ", response)
         this.cards = response;
       }
     })
@@ -101,4 +120,5 @@ export interface Quizsettings {
   theme: string,
   amount: number,
   repetitive: boolean,
+  folderId: string
 }

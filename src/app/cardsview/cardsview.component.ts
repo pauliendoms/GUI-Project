@@ -24,7 +24,7 @@ export class CardsviewComponent implements OnInit {
 
   async ngOnInit() {
     this.folder.id = this.route.snapshot.params['id'];
-    this.onGetFolder();
+    this.onGetFolder(); // het werkt maar moet hier geen await om zeker te zijn dat het allemaal voltooird is?  
     this.onGetCards();
     this.newCard.folderId = this.folder.id;
   }
@@ -38,6 +38,7 @@ export class CardsviewComponent implements OnInit {
   }
 
   onSaveFolder():void {
+    console.log("folder before saveFolder: ", this.folder);
     this.data.saveFolder(this.folder);
   }
 
@@ -49,7 +50,8 @@ export class CardsviewComponent implements OnInit {
   onGetFolder(): void {
     this.folderSubscription = this.data.getFolder(this.folder.id).subscribe(
       folder => {
-        this.folder = folder[0];
+        console.log("response in onGetFolder: ", folder)
+        this.folder = folder;
       }
     );
   }
