@@ -8,6 +8,8 @@ import { Folder } from './folder/folder.component';
 import { doc } from 'firebase/firestore';
 import { isDelegatedFactoryMetadata } from '@angular/compiler/src/render3/r3_factory';
 import { AuthService } from './auth/auth.service';
+import { user } from '@angular/fire/auth';
+import { fetchSignInMethodsForEmail } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -148,6 +150,8 @@ export class DatabaseService {
     );
   }
 }
+
+
 
 export interface Admin {
   id: string

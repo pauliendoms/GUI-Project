@@ -1,19 +1,19 @@
 <div class="div bg-white-100 shadow-md mx-auto w-fit p-5 rounded-xl my-2">
-    <form (ngSubmit)="onSignup()" #f="ngForm">
+    <form (ngSubmit)="onSignup()" [formGroup]="form">
         <div class="form-group">
-            <input type="email" name="email" id="email" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" ngModel required email #email="ngModel" placeholder="Email">
-            <p *ngIf="!email.valid && email.touched" class="error text-red-100">Email is absolutely required</p>
+            <input type="email" name="email" id="email" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" formControlName="email" placeholder="Email">
+            <p *ngIf="!form.get('email')?.valid && form.get('email')?.touched" class="error text-red-100">Email is absolutely required</p>
         </div>
         <div class="form-group">
-            <input type="password" name="password" id="password" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" ngModel required #pass="ngModel" placeholder="Password">
-            <p *ngIf="!pass.valid && pass.touched" class="error text-red-100">Password is obviously required</p>
+            <input type="password" name="password" id="password" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" formControlName="password" placeholder="Password">
+            <p *ngIf="!form.get('password')?.valid && form.get('password')?.touched" class="error text-red-100">Password is obviously required</p>
         </div>
         <div class="form-group">
-            <input type="password" name="password" id="password" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" ngModel required #rpass="ngModel" placeholder="Repeat Password">
-            <p *ngIf="pass.touched && pass != rpass" class="error text-red-100">Repeat password is not the same</p>
+            <input type="password" name="password" id="password" class="form-control bg-lightgrey-100 rounded-2xl px-3 py-1 my-2 mx-auto" formControlName="rpassword" placeholder="Repeat Password">
+            <p *ngIf="form.get('rpassword')?.touched && form.get('password') != form.get('rpassword')" class="error text-red-100">Repeat password is not the same</p>
         </div>
         <div class="flex flex-row items-center justify-center">
-            <button type="submit" [disabled]="!f.valid" class="bg-primary-100 text-white-100 rounded-3xl p-1 px-8 mx-auto hover:cursor-pointer">Signup</button>
+            <button type="submit" [disabled]="!form.valid" class="bg-primary-100 text-white-100 rounded-3xl p-1 px-8 mx-auto hover:cursor-pointer">Signup</button>
             <a routerLink="../login" class="mx-auto px-8 bg-secondary-100 text-white-100 rounded-3xl p-1">Login</a>
         </div> 
     </form>

@@ -6,6 +6,7 @@ import { Admin, DatabaseService } from '../database.service';
 import { browserLocalPersistence } from '@firebase/auth';
 import { onAuthStateChanged } from '@firebase/auth';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { fetchSignInMethodsForEmail, getAuth } from '@firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,11 @@ export class AuthService {
       }
     })
   }
+
+  getSigninMethods(email: string): Promise<string[]> {
+    return fetchSignInMethodsForEmail(this.auth, email);
+  }
+
 /*
   isAdmin(): boolean {
     return this.admin;

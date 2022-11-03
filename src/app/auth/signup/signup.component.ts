@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, NgForm, ValidationErrors, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { DatabaseService } from 'src/app/database.service';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -10,13 +11,17 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
 
-  @ViewChild('f') form!: NgForm;
-
   error: boolean = false;
+  form: FormGroup = new FormGroup({});
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private auth: AuthService, private router: Router) { }
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      'email': new FormControl(null, [Validators.required, Validators.email, this.uniqueEmail.bind(this)]),
+      'password': new FormControl(null, [Validators.required]),
+      'rpassword': new FormControl(null, [Validators.required, this.repeatPassword.bind(this)])
+    });
   }
 
   onSignup() {
@@ -26,7 +31,7 @@ export class SignupComponent implements OnInit {
     console.log(email);
     console.log(pass);
 
-    this.authService.signup(email, pass)
+    this.auth.signup(email, pass)
     .then((res: string) => {
       if(res == 'succes') {
         this.router.navigate(['login']);
@@ -34,6 +39,29 @@ export class SignupComponent implements OnInit {
         alert(res);
       }
     })
+  }
+
+  uniqueEmail(email: AbstractControl): Promise<ValidationErrors | null> {
+    return new Promise<ValidationErrors | null>((resolve, reject) => {
+      if(email.hasError('email')) {
+        resolve(null)
+      }
+      this.auth.getSigninMethods(email.value)
+      .then((response: string[]) => {
+        if(response.length > 0) {
+          resolve({ 'emailNotUnique': true})
+        }
+        resolve(null)
+      })
+    })
+  }
+
+  repeatPassword(rpass: FormControl): {[s:string]: boolean} | null {
+    if(rpass.value == this.form.value.password) {
+      return null
+    } else {
+      return {'invalidFormat': true};
+    }
   }
 
 }
