@@ -2,11 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { collectionData, Firestore, docData } from '@angular/fire/firestore';
 import { addDoc, collection, CollectionReference, deleteDoc, DocumentReference, query, setDoc, where, updateDoc } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Card } from './card/card.component';
 import { Folder } from './folder/folder.component';
 import { doc } from 'firebase/firestore';
 import { isDelegatedFactoryMetadata } from '@angular/compiler/src/render3/r3_factory';
+import { AuthService } from './auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +16,42 @@ import { isDelegatedFactoryMetadata } from '@angular/compiler/src/render3/r3_fac
 export class DatabaseService {
   constructor(private db: Firestore) {}
 
-  getFolders(): Observable<Folder[]> {
+  getPersonalFolders(uid: string): Observable<Folder[]> {
+    console.log(uid)
     return collectionData<Folder>(
-      collection(this.db, 'folders') as CollectionReference<Folder>,
-      {idField: 'id'}
+      query<Folder>(
+        collection(this.db, 'folders') as CollectionReference<Folder>,
+        where("uid", "==", uid)
+      ), {idField: 'id'}
     );
   }
+
+  getPublicFolders(): Observable<Folder[]> {
+    return collectionData<Folder>(
+      query<Folder>(
+        collection(this.db, 'folders') as CollectionReference<Folder>,
+        where('public', '==', true)
+      ), {idField: 'id'}
+    )
+  }
+
+  /*
+  getAllFolders(uid: string): Observable<Folder[]> {
+    let observables: Observable<Folder[]>[] = [];
+    observables.push(collectionData<Folder>(
+      query<Folder>(
+        collection(this.db, 'folders') as CollectionReference<Folder>,
+        where("public", "==", true),
+      ), {idField: "id"}
+    ));
+    observables.push(collectionData<Folder>(
+      query<Folder>(
+        collection(this.db, 'folders') as CollectionReference<Folder>,
+        where("uid", "==", uid),
+      ), {idField: "id"}
+    ));
+    return combineLatest(observables);
+  }*/
 
   getFolder(id: string): Observable<Folder> {
     return docData<Folder>(
@@ -109,6 +140,17 @@ export class DatabaseService {
       })
     })
   }
+
+  getAdmin(id: string): Observable<Admin> {
+    return docData<Admin>(
+      doc(this.db, 'admin/' + id) as DocumentReference<Admin>,
+      {idField: 'id'}
+    );
+  }
+}
+
+export interface Admin {
+  id: string
 }
 
 /*

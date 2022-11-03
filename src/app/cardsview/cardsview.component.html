@@ -1,7 +1,7 @@
 <div>
-    <div class="flex flex-col items-center">
+    <i class="material-icons cursor-pointer" style="color: gray;vertical-align: middle;font-size:xx-large;" routerLink="/cards">arrow_back</i>
+    <div class="flex flex-col items-center" *ngIf="!this.folder.public || this.admin">
         <div class="w-full text-center my-5">
-            <i class="material-icons cursor-pointer" style="color: gray;vertical-align: middle;" routerLink="/cards">arrow_back</i>
             <input type="text" [(ngModel)]="folder.name" class="drop-shadow-2xl shadow-lg mx-3"/>
             <button class="btn mx-3" (click)="onSaveFolder()">Save folder name</button>
             <button class="btn mx-3" (click)="onDeleteFolder()">Delete folder</button>
@@ -19,6 +19,6 @@
         </div>
     </div>
     <div class="w-full grid grid-cols-2 gap-y-6">
-        <app-card *ngFor="let card of this.cards" [card]="card"></app-card>
+        <app-card *ngFor="let card of this.cards" [card]="card" [admin]="this.admin" [public]="this.folder.public"></app-card>
     </div>
 </div>

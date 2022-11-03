@@ -12,6 +12,8 @@ export class CardComponent implements OnInit {
   constructor(public data: DatabaseService) { }
 
   @Input() card: Card = {id: "", question: "", answer: "", folderId: ""};
+  @Input() admin: boolean = false;
+  @Input() public: boolean = false;
 
   ngOnInit(): void {
   }

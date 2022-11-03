@@ -4,7 +4,10 @@
     <div class="grow"></div>
     <div class="grow"></div>
     <ul class="nav-list flex justify-evenly grow text-black-100 px-4">
-        <li class="px-12"><a class="nav-link" routerLinkActive="active" routerLink="/cards" [routerLinkActiveOptions]="{exact:true}">Cards</a></li>
-        <li><a class="nav-link" routerLinkActive="active" routerLink="/quiz">Quiz</a></li>
+        <li class="flex flex-row items-center"><a class="nav-link" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">Home</a></li>
+        <li class="px-12 flex flex-row items-center"><a class="nav-link" routerLinkActive="active" routerLink="cards">Cards</a></li>
+        <li class="flex flex-row items-center"><a class="nav-link" routerLinkActive="active" routerLink="quiz">Quiz</a></li>
     </ul>
+    <button *ngIf="!loggedin" routerLink="login" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3">Login</button>
+    <button *ngIf="loggedin" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" (click)="onLogout()">Logout</button>
 </div>

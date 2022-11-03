@@ -3,6 +3,7 @@ import { DatabaseService } from '../database.service';
 import { Folder } from '../folder/folder.component';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-folderview',
@@ -11,13 +12,20 @@ import { Subscription } from 'rxjs';
 })
 export class FolderviewComponent implements OnInit {
   folders: Folder[] = [];
-  newFolder: Folder = {id: "", name: ""};
+  newFolder: Folder = {id: "", name: "", public: false, uid: ""};
   subscription: Subscription = new Subscription;
 
-  constructor(public data: DatabaseService, private router : Router) { }
+  constructor(public data: DatabaseService, private router : Router, private auth: AuthService) { }
+
+  admin: boolean = false;
 
   ngOnInit(): void {
-    this.onGetFolders();
+    this.auth.admin.subscribe({
+      next: (res: boolean) => {
+        this.admin = res;
+        console.log(this.admin)
+      }
+    })
   }
 
   onAddFolder() : void {
@@ -27,15 +35,4 @@ export class FolderviewComponent implements OnInit {
     }
   }
 
-  onGetFolders(): void {
-    this.subscription = this.data.getFolders().subscribe(
-      folders => {
-        this.folders = folders;
-      }
-    )
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
 }

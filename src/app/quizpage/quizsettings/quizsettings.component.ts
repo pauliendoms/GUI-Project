@@ -5,6 +5,7 @@ import { EventEmitter } from '@angular/core';
 import { Folder } from 'src/app/folder/folder.component';
 import { Subscription } from 'rxjs';
 import { Card } from 'src/app/card/card.component';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-quizsettings',
@@ -13,7 +14,7 @@ import { Card } from 'src/app/card/card.component';
 })
 export class QuizsettingsComponent implements OnInit {
 
-  constructor(public data : DatabaseService) { }
+  constructor(public data : DatabaseService, private auth: AuthService) { }
 
   quizsettings : Quizsettings = {
     theme: "",
@@ -27,10 +28,18 @@ export class QuizsettingsComponent implements OnInit {
   error: string = "";
 
   folders: Folder[] = [];
-  folderSubscription: Subscription = new Subscription;
+  personalFolderSubscription: Subscription = new Subscription;
+  publicFolderSubscription: Subscription = new Subscription;
 
   cards: Card[] = [];
   cardSupscription: Subscription = new Subscription;
+
+  adminSubscription: Subscription = new Subscription;
+
+  uid: string = "";
+
+  personalFolders: Folder[] = [];
+  publicFolders: Folder[] = [];
 
   @Output() quizStart = new EventEmitter<Quizsettings>();
 
@@ -93,11 +102,32 @@ export class QuizsettingsComponent implements OnInit {
   }
 
   onGetFolders(): void {
-    this.folderSubscription = this.data.getFolders().subscribe({
-      next: (response: Folder[]) => {
-        this.folders = response;
+    this.auth.uid.subscribe({
+      next: (uid: string) => {
+        if(this.auth.admin.getValue()){
+          console.log("wel admin")
+          this.personalFolderSubscription = this.data.getPersonalFolders(uid).subscribe({
+            next: (res: Folder[]) => {
+              this.folders = res;
+            }
+          })
+        } else {
+          console.log("geen admin")
+          this.personalFolderSubscription = this.data.getPersonalFolders(uid).subscribe({
+            next: (res: Folder[]) => {
+              this.personalFolders = res;
+              this.publicFolderSubscription = this.data.getPublicFolders().subscribe({
+                next: (res: Folder[]) => {
+                  console.log("how many times are we doing this?")
+                  this.folders = [...this.personalFolders, ...res];
+                }
+              })
+            }
+          })
+        }
       }
-    }); 
+    })
+    
   }
 
   onGetCards(folderId: string): void {
@@ -110,7 +140,7 @@ export class QuizsettingsComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-    this.folderSubscription.unsubscribe();
+    this.personalFolderSubscription.unsubscribe();
     this.cardSupscription.unsubscribe();
   }
 

@@ -3,7 +3,9 @@
         <input type="text" name="new-folder" id="new-folder" [(ngModel)]="newFolder.name" class="drop-shadow-2xl shadow-lg mx-3" placeholder="Folder name">
         <button (click)="onAddFolder()" class="btn">Add Folder</button>
     </div>
-    <div class="w-full grid grid-cols-4 justify-items-center gap-y-10">
-        <app-folder *ngFor="let folder of this.folders" [folder] = "folder"></app-folder>
+    <div *ngIf="!admin">
+        <a class="nav-link bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" routerLink="/cards">Personal</a>
+        <a class="nav-link bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" routerLink="public">Public</a>
     </div>
+    <router-outlet></router-outlet>
 </div>

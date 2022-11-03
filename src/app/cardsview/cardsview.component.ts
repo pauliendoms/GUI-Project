@@ -4,29 +4,40 @@ import { DatabaseService } from '../database.service';
 import { ActivatedRoute } from '@angular/router';
 import { Folder } from '../folder/folder.component';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { CanComponentDeactivate } from '../auth/auth.guard';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-cardsview',
   templateUrl: './cardsview.component.html',
   styleUrls: ['./cardsview.component.css']
 })
-export class CardsviewComponent implements OnInit {
+export class CardsviewComponent implements OnInit, CanComponentDeactivate {
 
   cards: Card[] = [];
-  folder: Folder = {id: "", name: ""};
+  folder: Folder = {id: "", name: "", public: false, uid: ""};
   folderSubscription: Subscription = new Subscription;
   cardSubscription: Subscription = new Subscription;
 
-  constructor(public data: DatabaseService, private route: ActivatedRoute, private router: Router) { }
+  admin: boolean = false;
+
+  constructor(public data: DatabaseService, private route: ActivatedRoute, private router: Router, private auth: AuthService) { }
 
   newCard: Card = {id: "", question: "", answer: "", folderId: ""};
+  saved: boolean= false;
 
   async ngOnInit() {
     this.folder.id = this.route.snapshot.params['id'];
+    console.log("I'm here and this is the folderid: ", this.folder.id);
     this.onGetFolder(); // het werkt maar moet hier geen await om zeker te zijn dat het allemaal voltooird is?  
     this.onGetCards();
     this.newCard.folderId = this.folder.id;
+    this.auth.admin.subscribe({
+      next: (res: boolean) => {
+        this.admin = res;
+      }
+    })
   }
 
   onAddCard(): void {
@@ -62,6 +73,14 @@ export class CardsviewComponent implements OnInit {
         this.cards = cards;
       }
     )
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.saved === false) {
+      return confirm("Are you sure you want to leave this page?");
+    } else {
+      return true;
+    }
   }
 
   ngOnDestroy(): void {
