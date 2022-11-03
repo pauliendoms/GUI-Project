@@ -18,8 +18,8 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = new FormGroup({
-      'email': new FormControl(null, [Validators.required, Validators.email, this.uniqueEmail.bind(this)]),
-      'password': new FormControl(null, [Validators.required]),
+      'email': new FormControl('', [Validators.required, Validators.email], [this.uniqueEmail.bind(this)]),
+      'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
       'rpassword': new FormControl(null, [Validators.required, this.repeatPassword.bind(this)])
     });
   }
@@ -44,7 +44,7 @@ export class SignupComponent implements OnInit {
   uniqueEmail(email: AbstractControl): Promise<ValidationErrors | null> {
     return new Promise<ValidationErrors | null>((resolve, reject) => {
       if(email.hasError('email')) {
-        resolve(null)
+        resolve(null);
       }
       this.auth.getSigninMethods(email.value)
       .then((response: string[]) => {
@@ -57,7 +57,9 @@ export class SignupComponent implements OnInit {
   }
 
   repeatPassword(rpass: FormControl): {[s:string]: boolean} | null {
-    if(rpass.value == this.form.value.password) {
+    console.log("hier: ", this.form.get('password')?.value)
+    console.log(rpass.value)
+    if(rpass.value == this.form.get('password')?.value) {
       return null
     } else {
       return {'invalidFormat': true};
