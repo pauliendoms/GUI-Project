@@ -1,5 +1,9 @@
 <div class="navbar flex justify-between bg-red-100 p-4">
-    <h1 class="flashytitle text-white-100 text-2xl px-3 cursor-pointer" routerLink="/">Flashy</h1>
+    <!--
+
+        <h1 class="flashytitle text-white-100 text-2xl px-3 cursor-pointer" routerLink="/">Flashy</h1>
+    -->
+    <img [src]="imageUrl" alt="Flashy Logo" class="w-24 mx-2 cursor-pointer" routerLink="/">
     <div class="grow"></div>
     <div class="grow"></div>
     <div class="grow"></div>
@@ -9,5 +13,5 @@
         <li class="flex flex-row items-center"><a class="nav-link" routerLinkActive="active" routerLink="quiz">Quiz</a></li>
     </ul>
     <button *ngIf="!loggedin" routerLink="login" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" appButtonColor [color]="'grey'">Login</button>
-    <button *ngIf="loggedin" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" (click)="onLogout()" appButtonColor [color]="'grey'">Logout</button>
+    <button *ngIf="loggedin" class="bg-primary-100 text-white-100 rounded-md px-3 mr-3" (click)="onLogout()" appButtonColor [color]="'grey'">Logout</button>
 </div>

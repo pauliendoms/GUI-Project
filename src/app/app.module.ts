@@ -23,6 +23,7 @@ import { PersonalFoldersComponent } from './personal-folders/personal-folders.co
 import { PublicFoldersComponent } from './public-folders/public-folders.component';
 import { AdminGuard } from './auth/admin.guard';
 import { ButtonColorDirective } from './button-color.directive';
+import { getStorage, provideStorage } from '@angular/fire/storage';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: "full"},
@@ -55,6 +56,7 @@ const routes: Routes = [
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    provideStorage(() => getStorage()),
     AuthModule,
     RouterModule.forRoot(routes),
     HttpClientModule
