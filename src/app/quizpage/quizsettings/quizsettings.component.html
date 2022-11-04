@@ -1,7 +1,7 @@
 <div class="quizsettings flex flex-col justify-between items-center">
     <label class="p-2" for="folder-select">Select a folder:</label>
     <select class="m-2" id="folder-select" name="folder-select" [(ngModel)]="this.quizsettings.theme">
-        <option *ngFor="let folder of this.folders" [value]="folder.name">{{folder.name}}</option>
+        <option *ngFor="let folder of this.folders | sortPipe" [value]="folder.name">{{folder.name}}</option>
     </select>
     <label for="nmbr_cards">Select the amount of questions: </label>
     <input type="number" name="nmbr_cards" id="nmbr_cards" min="1" class="spinbox border-1 shadow-md m-2" [(ngModel)]="this.quizsettings.amount">
