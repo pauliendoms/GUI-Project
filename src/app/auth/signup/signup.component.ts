@@ -11,7 +11,6 @@ import { AuthService } from '../auth.service';
 })
 export class SignupComponent implements OnInit {
 
-  error: boolean = false;
   form: FormGroup = new FormGroup({});
 
   constructor(private auth: AuthService, private router: Router) { }

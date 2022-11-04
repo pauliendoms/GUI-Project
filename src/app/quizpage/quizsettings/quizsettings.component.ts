@@ -62,8 +62,6 @@ export class QuizsettingsComponent implements OnInit {
       return;
     }
 
-
-
     console.log("starting");
     this.quizStart.emit(this.quizsettings);
   }
