@@ -8,6 +8,6 @@
         <li class="px-12 flex flex-row items-center"><a class="nav-link" routerLinkActive="active" routerLink="cards">Cards</a></li>
         <li class="flex flex-row items-center"><a class="nav-link" routerLinkActive="active" routerLink="quiz">Quiz</a></li>
     </ul>
-    <button *ngIf="!loggedin" routerLink="login" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3">Login</button>
-    <button *ngIf="loggedin" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" (click)="onLogout()">Logout</button>
+    <button *ngIf="!loggedin" routerLink="login" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" appButtonColor [color]="'grey'">Login</button>
+    <button *ngIf="loggedin" class="bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" (click)="onLogout()" appButtonColor [color]="'grey'">Logout</button>
 </div>
