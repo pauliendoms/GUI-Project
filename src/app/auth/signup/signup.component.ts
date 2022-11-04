@@ -12,6 +12,7 @@ import { AuthService } from '../auth.service';
 export class SignupComponent implements OnInit {
 
   form: FormGroup = new FormGroup({});
+  invalidLogin: boolean = true;
 
   constructor(private auth: AuthService, private router: Router) { }
 
@@ -33,6 +34,7 @@ export class SignupComponent implements OnInit {
     this.auth.signup(email, pass)
     .then((res: string) => {
       if(res == 'succes') {
+        this.invalidLogin = false;
         this.router.navigate(['login']);
       } else {
         alert(res);
