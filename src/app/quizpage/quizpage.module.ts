@@ -14,12 +14,12 @@ import { FormsModule } from '@angular/forms';
     QuizComponent,
     QuizviewComponent,
     QuizCardComponent,
-    QuizsettingsComponent
+    QuizsettingsComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    QuizpageRoutingModule
+    QuizpageRoutingModule,
   ]
 })
 export class QuizpageModule { }

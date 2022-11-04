@@ -22,6 +22,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { PersonalFoldersComponent } from './personal-folders/personal-folders.component';
 import { PublicFoldersComponent } from './public-folders/public-folders.component';
 import { AdminGuard } from './auth/admin.guard';
+import { ButtonColorDirective } from './button-color.directive';
 
 const routes: Routes = [
   {path: '', component: HomeComponent, pathMatch: "full"},
@@ -45,7 +46,8 @@ const routes: Routes = [
     LimitLengthPipe,
     HomeComponent,
     PublicFoldersComponent,
-    PersonalFoldersComponent
+    PersonalFoldersComponent,
+    ButtonColorDirective,
   ],
   imports: [
     BrowserModule,

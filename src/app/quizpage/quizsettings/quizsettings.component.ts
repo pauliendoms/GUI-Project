@@ -6,6 +6,7 @@ import { Folder } from 'src/app/folder/folder.component';
 import { Subscription } from 'rxjs';
 import { Card } from 'src/app/card/card.component';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ButtonColorDirective } from 'src/app/button-color.directive';
 
 @Component({
   selector: 'app-quizsettings',

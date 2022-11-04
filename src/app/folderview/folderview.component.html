@@ -4,7 +4,7 @@
         <button (click)="onAddFolder()" class="btn">Add Folder</button>
     </div>
     <div *ngIf="!admin">
-        <a class="nav-link bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" routerLink="/cards">Personal</a>
+        <a class="nav-link bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" routerLink="/cards" appButtonColor [color]="'Aqua'">Personal</a>
         <a class="nav-link bg-primary-100 text-white-100 rounded-md p-2 px-3 mr-3" routerLink="public">Public</a>
     </div>
     <router-outlet></router-outlet>
