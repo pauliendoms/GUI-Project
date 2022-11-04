@@ -29,6 +29,7 @@ export class FolderviewComponent implements OnInit {
   }
 
   onAddFolder() : void {
+    this.newFolder.uid = this.auth.getId()!;
     if (this.newFolder.name != "") {
       this.data.addFolder(this.newFolder);
       this.newFolder.name = "";

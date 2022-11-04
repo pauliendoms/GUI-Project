@@ -83,6 +83,10 @@ export class CardsviewComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
+  onSaveStatus() :void {
+    this.data.saveFolder(this.folder);
+  }
+
   ngOnDestroy(): void {
     this.cardSubscription.unsubscribe();
     this.folderSubscription.unsubscribe();
